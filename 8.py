@@ -1,6 +1,7 @@
 import sys
 
 register = {}
+total_max = 0
 
 
 def resolve(name):
@@ -11,7 +12,9 @@ def resolve(name):
     else:
         return name
 
+
 def process_instruction(instruction):
+    global total_max
     dst, op, val, _, lo, cnd, ro = instruction.strip().split(" ")
 
     val = int(val)
@@ -30,6 +33,9 @@ def process_instruction(instruction):
         else:
             print("ERROR")
 
+        if register[dst] >= total_max:
+            total_max = register[dst]
+
 
 with open(sys.argv[1], "r") as f:
     for instruction in f:
@@ -42,4 +48,4 @@ for k, v in register.items():
         max_v = v
         max_k = k
 
-print(max_k, max_v)
+print(max_k, max_v, total_max)
